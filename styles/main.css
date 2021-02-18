@@ -35,3 +35,9 @@ h1,h2,h3,h4,h5,h6 {
 .menuSection {
 	flex-basis: 62%;
 }
+
+.reviews {
+	border: 2px solid black;
+	padding: 10px;
+	margin-bottom: 40px;
+}
