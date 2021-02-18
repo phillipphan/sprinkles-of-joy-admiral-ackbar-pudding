@@ -24,5 +24,15 @@ const render = (bakeryProducts, bakeryCategories) => {
 }
 
 eventHub.addEventListener("categorySelected", e => {
-  
+  getProducts()
+    .then(getCategories)
+    .then(() => {
+      let chosenCategory = e.detail.selectedCategory
+      const bakeryProducts = useProducts()
+      const bakeryCategories = useCategories()
+
+      chosenCategory = bakeryCategories.filter(cat => cat.id === parseInt(chosenCategory))
+
+      render(bakeryProducts, chosenCategory)
+    })
 })
