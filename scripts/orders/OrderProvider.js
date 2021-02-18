@@ -5,7 +5,7 @@ const eventHub = document.querySelector("#container")
 
 let customerOrders = []
 
-export const useOrders = () => orders.slice()
+export const useOrders = () => customerOrders.slice()
 
 export const getOrders = () => {
   return fetch(`${bakeryAPI.baseURL}/orders?_expand=status`)
@@ -36,6 +36,14 @@ export const saveOrder = (order, productsInOrder) => {
     })
     .then(() => getOrders())
     .then(dispatchStateChangeEvent)
+}
+
+export const deleteOrder = (id) => {
+  return fetch(`${bakeryAPI.baseURL}/orders/${id}`, {
+    method: "DELETE"
+  })
+  .then(getOrders)
+  .then(dispatchStateChangeEvent)
 }
 
 const dispatchStateChangeEvent = () => {
