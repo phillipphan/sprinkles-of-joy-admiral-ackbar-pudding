@@ -18,7 +18,7 @@ export const ProductList = () => {
       bakeryProducts = useProducts()
       bakeryCategories = useCategories()
       allReviews = useReviews()
-      debugger
+      
 
       render()
     })
