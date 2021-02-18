@@ -1,6 +1,6 @@
 const eventHub = document.querySelector("#container")
 
-export const Product = (product, category) => {
+export const Product = (product, category, reviews) => {
     return `
       <section class="baked_good">
           <header class="baked_good__header">
@@ -10,6 +10,10 @@ export const Product = (product, category) => {
           <div>
               <button id="addProduct--${product.id}">Add to Cart</button>
               <p>${product.description} [${category.name}]</p>
+              <div class="reviews">${reviews.map(rev => {
+                  return `<p>${rev.text}</p><p>${rev.rating}</p>`
+              }                
+                ).join("")}</div>
           </div>
       </section>
   `
