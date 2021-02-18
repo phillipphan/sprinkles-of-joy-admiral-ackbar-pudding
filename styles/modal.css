@@ -6,6 +6,7 @@
   right: 0;
   bottom: 0;
   left: 0;
+  overflow-y: initial;
 }
 
 .modal--content {
@@ -19,6 +20,8 @@
   padding: 1em;
   box-shadow: 0px 0px 10px 0px black;
   transform: translate(-50%, -50%);
+  height: 80vh;
+  overflow-y: auto;
 }
 
 .order {
