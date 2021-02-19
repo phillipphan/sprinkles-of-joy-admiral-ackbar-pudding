@@ -1,5 +1,5 @@
 import { authHelper } from "../auth/authHelper.js"
-import { customerLogin } from "./CustomerProvider.js"
+import { customerLogin, saveMember } from "./CustomerProvider.js"
 
 const eventHub = document.querySelector("#container")
 const contentTarget = document.querySelector(".form__register")
@@ -44,11 +44,33 @@ const render = () => {
 
 eventHub.addEventListener("showRegisterForm", RegisterForm)
 
-eventHub.addEventListener("click", evt => {
-  if (evt.target.id === "link__login") {
-    contentTarget.innerHTML = ""
+// eventHub.addEventListener("click", evt => {
+//   if (evt.target.id === "link__login") {
+//     contentTarget.innerHTML = ""
 
-    const customEvent = new CustomEvent("showLoginForm")
-    eventHub.dispatchEvent(customEvent)
+//     const customEvent = new CustomEvent("showLoginForm")
+//     eventHub.dispatchEvent(customEvent)
+//   }
+// })
+
+//register a new user
+eventHub.addEventListener("click", event => {
+  if (event.target.id === "customerRegister") {
+    debugger
+    const firstName = document.getElementById("register-firstName").value
+    const lastName = document.getElementById("register-lastName").value
+    const email = document.getElementById("register-email").value
+    const password = document.getElementById("register-password").value
+    const rewardsMember = document.getElementById("register-rewards").checked
+
+    const newUser = {
+      "name": `${firstName} ${lastName}`,
+      "rewardsMember": rewardsMember,
+      "email": email,
+      "password": password
+
+
+    }
+    saveMember(newUser)
   }
 })
