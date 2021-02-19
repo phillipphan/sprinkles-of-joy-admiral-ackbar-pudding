@@ -12,11 +12,15 @@ export const Product = (product, category, reviews) => {
               <p>${product.description} [${category.name}]</p>
               <div class="reviews">
               <h3>Reviews</h3>
-              <div class="review">${reviews.map(rev => {
-                  return `<p>${rev.text}</p><p>${rev.rating}/5</p>`
+              ${reviews.map(rev => {
+                  return `<div class="review">
+                  <div class="date">${rev.date}</div>
+                  <p>${rev.text}</p>
+                  <p>${rev.rating}/5</p>
+                  </div>`
               }                
                 ).join("")}
-              </div>
+              
           </div>
       </section>
   `

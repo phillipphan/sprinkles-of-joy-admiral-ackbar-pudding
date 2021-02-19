@@ -1,5 +1,5 @@
 import { bakeryAPI } from "../Settings.js"
-// import { saveOrderProducts } from "./OrderProductProvider.js"
+
 
 const eventHub = document.querySelector("#container")
 
@@ -13,4 +13,34 @@ export const getReviews = () => {
     .then(response => {
         customerReviews = response
     })
+}
+
+//saves current review and posts to API
+export const saveReview = entry => {
+    return fetch(`${bakeryAPI.baseURL}/reviews`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(entry)
+    })
+    .then(getReviews)
+    .then(dispatchStateChangeEvent)
+}
+
+//put new reviews on the DOM once they've been submitted or deleted
+const dispatchStateChangeEvent = () => {
+    const reviewStateChangedEvent = new CustomEvent("reviewStateChanged")
+
+    eventHub.dispatchEvent(reviewStateChangedEvent)
+}
+
+//function to delete note
+export const deleteReview = id => {
+    return fetch(`http://localhost:8088/entries/${id}`, {
+        method: "DELETE"
+    })
+        .then(getReviews)
+        .then(dispatchStateChangeEvent)
+
 }
