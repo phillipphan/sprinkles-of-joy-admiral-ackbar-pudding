@@ -37,7 +37,7 @@ const dispatchStateChangeEvent = () => {
 
 //function to delete note
 export const deleteReview = id => {
-    return fetch(`http://localhost:8088/entries/${id}`, {
+    return fetch(`http://localhost:8088/reviews/${id}`, {
         method: "DELETE"
     })
         .then(getReviews)
