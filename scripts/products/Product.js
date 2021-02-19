@@ -23,9 +23,6 @@ export const Product = (product, category, reviews) => {
 
 eventHub.addEventListener("click", evt => {
     if (evt.target.id.startsWith("addProduct--")) {
-        if (authHelper.getCurrentUserId() === null){
-            
-        }
         const [prefix, productId] = evt.target.id.split("--")
         const addProductEvent = new CustomEvent("addToCart", {
             detail: {
