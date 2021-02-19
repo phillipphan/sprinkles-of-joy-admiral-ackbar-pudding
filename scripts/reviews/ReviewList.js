@@ -25,7 +25,6 @@ eventHub.addEventListener("showReviews", customEvent => {
 })
 
 eventHub.addEventListener("deleteReview", customEvent => {
-    debugger
     const reviewId = customEvent.detail.selectedReview
     deleteReview(reviewId)
     reviewEditForm()

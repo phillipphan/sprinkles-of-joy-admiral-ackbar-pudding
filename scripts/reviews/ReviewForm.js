@@ -83,7 +83,7 @@ eventHub.addEventListener("click", clickEvent => {
     if (clickEvent.target.id === "submitReview") {
         
         //Make a new object representation of a note
-        debugger
+        
         
         console.log('allProducts: ', allProducts);
         console.log(typeof(allProducts))
@@ -93,7 +93,7 @@ eventHub.addEventListener("click", clickEvent => {
         const rating = document.getElementById("rating").value
         const reviewText = document.getElementById("reviewText").value
         const user = authHelper.getCurrentUserId()
-        debugger
+        
         // Key/value pairs here
         const newReview = {
             "productId": parseInt(product),

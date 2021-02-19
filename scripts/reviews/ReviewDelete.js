@@ -54,6 +54,7 @@ export const renderEditReview = (userId, products, reviews) => {
         <p>${rev.text}</p>
         <p>${rev.rating}/5</p>
         <button id="deleteReview--${rev.id}">Delete Review</button>
+        <button id="editReview--${rev.id}">Edit Review</button>
         </div>
         `
     }                
@@ -64,7 +65,27 @@ export const renderEditReview = (userId, products, reviews) => {
 `
 }
 
-//listens for click on close button in review form
+
+//listens for click on edit button in review form
+eventHub.addEventListener("click", event => {
+    if (event.target.id.startsWith("editReview--")) {
+        const [idPrefix, idSuffix] = event.target.id.split("--")
+        
+        //create new custom event to be dispatched
+        const editReviewCustomEvent = new CustomEvent("editReview", {
+            detail: {
+                selectedReview: idSuffix
+            }
+        })
+        //dispatch the custom event
+        eventHub.dispatchEvent(editReviewCustomEvent)
+      
+    }
+  })
+
+
+
+//listens for click on delete button in review form
 eventHub.addEventListener("click", event => {
     if (event.target.id.startsWith("deleteReview--")) {
         const [idPrefix, idSuffix] = event.target.id.split("--")
