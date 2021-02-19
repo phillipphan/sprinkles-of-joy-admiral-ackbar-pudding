@@ -1,7 +1,9 @@
 //import statements
+import { ProductList } from "../products/ProductList.js"
 import { reviewEditForm } from "./reviewDelete.js"
 import { reviewForm } from "./ReviewForm.js"
-
+import { deleteReview } from "./ReviewProvider.js"
+// import { renderEditReview } from "./ReviewDelete"
 
 //define eventHub 
 const eventHub = document.querySelector("#container")
@@ -18,12 +20,15 @@ eventHub.addEventListener("showReviews", customEvent => {
     reviewEditForm()
 })
 
+eventHub.addEventListener("showReviews", customEvent => {
+    reviewEditForm()
+})
 
-const editReviewsToDom = (user, allUsers, allReviews, allproducts) => {
-    // debugger
+eventHub.addEventListener("deleteReview", customEvent => {
+    debugger
+    const reviewId = customEvent.detail.selectedReview
+    deleteReview(reviewId)
+    reviewEditForm()
+    ProductList()
 
-    
-    const currentUser = allUsers.find(
-        cu => cu.id === userId
-    )
-}
+})

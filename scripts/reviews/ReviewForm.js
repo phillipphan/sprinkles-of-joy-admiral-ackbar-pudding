@@ -11,6 +11,11 @@ const eventHub = document.querySelector("#container")
 //define contentTarget that will house reviews
 const contentTarget = document.querySelector(".newReview")
 
+let allProducts = []
+const products = getProducts()
+    .then(() => {
+        allProducts = useProducts()})
+
 
 //function that pulls all products to be inserted into dropdown in review form
 export const reviewForm = () => {
@@ -78,7 +83,12 @@ eventHub.addEventListener("click", clickEvent => {
     if (clickEvent.target.id === "submitReview") {
         
         //Make a new object representation of a note
+        debugger
+        
+        console.log('allProducts: ', allProducts);
+        console.log(typeof(allProducts))
         const product = document.getElementById("productDropdown").value
+        const productName = allProducts.find(prod => prod.id === parseInt(product)).name
         const reviewDate = document.getElementById("reviewDate").value
         const rating = document.getElementById("rating").value
         const reviewText = document.getElementById("reviewText").value
@@ -87,6 +97,7 @@ eventHub.addEventListener("click", clickEvent => {
         // Key/value pairs here
         const newReview = {
             "productId": parseInt(product),
+            "productName": productName,
             "date": reviewDate,
             "rating": parseInt(rating),
             "text": reviewText,
