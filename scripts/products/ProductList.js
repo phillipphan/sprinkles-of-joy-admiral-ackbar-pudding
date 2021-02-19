@@ -20,11 +20,11 @@ export const ProductList = () => {
       allReviews = useReviews()
       
 
-      render()
+      render(bakeryProducts, bakeryCategories)
     })
 }
 
-const render = () => {
+const render = (bakeryProducts, bakeryCategories) => {
   contentTarget.innerHTML = bakeryProducts.map(product => {
     const productCategory = bakeryCategories.find(cat => cat.id === product.categoryId)
     const reviews = allReviews.filter(review => review.productId === product.id)
@@ -32,3 +32,18 @@ const render = () => {
     return Product(product, productCategory, reviews)
   }).join("")
 }
+
+eventHub.addEventListener("categorySelected", e => {
+  getProducts()
+    .then(getCategories)
+    .then(() => {
+      let chosenCategory = e.detail.selectedCategory
+      const products = useProducts()
+      const categories = useCategories()
+
+      const filteredProducts = products.filter(product => product.categoryId === parseInt(chosenCategory))
+      chosenCategory = categories.filter(cat => cat.id === parseInt(chosenCategory))
+
+      render(filteredProducts, chosenCategory)
+    })
+})

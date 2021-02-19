@@ -35,6 +35,7 @@ const render = () => {
     <button id="placeOrder">Place Order</button>
     <p>$${totalCost.toFixed(2)}</p>
     </div>
+    <div class="cart__warning"></div>
     </div>
   `
 }
@@ -53,7 +54,9 @@ eventHub.addEventListener("addToCart", event => {
 })
 
 eventHub.addEventListener("click", clickEvent => {
-  if (clickEvent.target.id === "placeOrder" && productsInCart.length !== 0) {
+  if (clickEvent.target.id === "placeOrder" && productsInCart.length < 1) {
+    document.querySelector(".cart__warning").innerHTML = "You have no items in your cart!"
+  }else if (clickEvent.target.id === "placeOrder" && productsInCart.length !== 0) {
     const currentCustomerId = parseInt(authHelper.getCurrentUserId())
     getStatuses()
       .then(() => {
@@ -66,7 +69,13 @@ eventHub.addEventListener("click", clickEvent => {
           "timestamp": Date.now()
         }
 
-        return saveOrder(newOrder, productsInCart)
+        saveOrder(newOrder, productsInCart)
+          .then(() => {
+            productsInCart = []
+            const customEvent = new CustomEvent("showCustomerCart")
+            eventHub.dispatchEvent(customEvent)
+            document.querySelector(".cart__warning").innerHTML = "Order added!"
+          })
       })
   }
 })
