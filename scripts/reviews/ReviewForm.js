@@ -1,68 +1,114 @@
 //import statements
-import { getCustomers, useCustomers } from "../customers/CustomerProvider.js"
-import { saveReview } from "./ReviewProvider.js"
+import { authHelper } from "../auth/authHelper.js"
+import { getCustomer, getCustomers, useCustomers } from "../customers/CustomerProvider.js"
+import { ProductList } from "../products/ProductList.js"
+import { getProducts, useProducts } from "../products/ProductProvider.js"
+import { saveReview } from "../reviews/ReviewProvider.js" 
 
 //define eventHub 
-const eventHub = document.querySelector(".container")
+const eventHub = document.querySelector("#container")
 
 //define contentTarget that will house reviews
-const contentTarget = document.querySelector(".reviews")
+const contentTarget = document.querySelector(".newReview")
+
+let allProducts = []
+const products = getProducts()
+    .then(() => {
+        allProducts = useProducts()})
 
 
-const render = (reviewCollection) => {
-
-    contentTarget.innerHTML = `
-    <h3 id="reviewHeader">Reviews</h3>
-    <article class="noteBox">
-        <input type="date" id="noteDate"><br>
-        <label for="noteText">Text:</label><br>
-        <textarea rows="5" cols="46" id="noteText"></textarea><br>
-        <label for="suspect">Suspect:</label><br>
-        <input type="text" size=50 id="suspect"><br>
-        <label for="author">Author:</label><br>
-        <input type="text" size=50 id="author"><br>
-        <label for="noteForm--criminal">criminal: </label><br>
-        <select id="noteForm--criminal" class="criminalSelect">
-        ${criminalCollection.map(criminal => `<option value="${ criminal.id }">${ criminal.name }</option>`).join("")}
-        </select><br>
-        <button id="saveNote">Save Note</button>
-        </article>`
-        
-    }
-    
-//render NoteForm on DOM 
-export const NoteForm = () => {
-    getCriminals()
-        .then(() => {
-            const arrayOfCriminals = useCriminals()
-            render(arrayOfCriminals)
-    })
+//function that pulls all products to be inserted into dropdown in review form
+export const reviewForm = () => {
+    getProducts()
+    .then(() => {
+            let productArray = useProducts()
+            renderReviewForm(productArray)
+        })
 }
 
 
 
-// Handle browser-generated click event in component
-eventHub.addEventListener("click", clickEvent => {
-    if (clickEvent.target.id === "saveNote") {
-        
-        // Make a new object representation of a note
-        const suspect = document.getElementById("suspect").value
-        const noteText = document.getElementById("noteText").value
-        const noteDate = document.getElementById("noteDate").value
-        const author = document.getElementById("author").value
-        const criminal = document.getElementById("noteForm--criminal").value
-        
-        const newNote = {
-            "date": noteDate,
-            "text": noteText,
-            "author": author,
-            "suspect": suspect,
-            "criminalId": parseInt(criminal)
-            
-        }
-    
 
-        // Change API state and application state
-        saveNote(newNote)
+
+
+//renders HTML for reviews
+const renderReviewForm = (productArray) => {
+    
+    contentTarget.innerHTML = `
+    <div id="reviews__modal" class="modal--parent">
+    <div class="modal--content">
+    <h2>Leave a review</h2>
+    <div>
+        <h3 id="dropdownTitle">Product</h3>
+        <select id="productDropdown">
+        ${productArray.map(product => `<option value="${ product.id }">${ product.name }</option>`).join("")}
+        </select><br>
+        <label for="reviewDate">Date:</label><br>
+        <input type="date" id="reviewDate"><br>
+        <label for="rating">Rating::</label><br>
+        <select id="rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br>
+        <label for="reviewText">Review:</label><br>
+        <textarea rows="22" cols="85" id="reviewText"></textarea><br>
+    </div>
+    <button id="submitReview">Submit Review</button>
+    <button id="modal--close">Close</button>
+    </div>
+    </div>
+    `
+    
+    
+}
+
+//listens for click on close button in review form
+eventHub.addEventListener("click", event => {
+    if (event.target.id === "modal--close") {
+      closeModal()
+    }
+  })
+
+//function to close review form
+const closeModal = () => {
+    contentTarget.innerHTML = ""
+  }
+
+
+  // Handle browser-generated click event in component
+eventHub.addEventListener("click", clickEvent => {
+    if (clickEvent.target.id === "submitReview") {
+        
+        //Make a new object representation of a note
+        
+        
+        console.log('allProducts: ', allProducts);
+        console.log(typeof(allProducts))
+        const product = document.getElementById("productDropdown").value
+        const productName = allProducts.find(prod => prod.id === parseInt(product)).name
+        const reviewDate = document.getElementById("reviewDate").value
+        const rating = document.getElementById("rating").value
+        const reviewText = document.getElementById("reviewText").value
+        const user = authHelper.getCurrentUserId()
+        
+        // Key/value pairs here
+        const newReview = {
+            "productId": parseInt(product),
+            "productName": productName,
+            "date": reviewDate,
+            "rating": parseInt(rating),
+            "text": reviewText,
+            "userId": parseInt(user)
+        }
+        
+
+        // Change API state, change application state and close modal
+        saveReview(newReview)
+        closeModal()
+        ProductList()
+        
     }
 })

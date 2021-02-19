@@ -1,28 +1,33 @@
-import { getProducts, useProducts } from "../products/ProductProvider.js"
-import { getReviews, useReviews } from "./ReviewProvider.js"
+//import statements
+import { ProductList } from "../products/ProductList.js"
+import { reviewEditForm } from "./reviewDelete.js"
+import { reviewForm } from "./ReviewForm.js"
+import { deleteReview } from "./ReviewProvider.js"
+// import { renderEditReview } from "./ReviewDelete"
 
-//define contentTarget that will house reviews
-const contentTarget = document.querySelector(".newReview")
+//define eventHub 
+const eventHub = document.querySelector("#container")
 
-//render current reviews to DOM with related product
-const reviewRender = (reviewArray, productArray) => {
-    debugger
-    contentTarget.innerHTML = reviewArray.map(review => {
-        const relatedProduct = productArray.filter(product => product.id === review.productId)
 
-        return`
-        <h3>reviews</h3>
-        <p>${review.text}</p>
-        `
-    }).join("")
-}
+//listener for new review button that displays pop up window
+eventHub.addEventListener("showNewReviewForm", customEvent => {
+    reviewForm()
+})
+    
 
-export const reviewList = () => {
-    getReviews()
-        .then(getProducts)
-        .then(() => {
-            const allReviews = useReviews()
-            const allProducts = useProducts()
-            reviewRender(allReviews, allProducts)
-        })
-}
+//listener for new review button that displays pop up window
+eventHub.addEventListener("showReviews", customEvent => {
+    reviewEditForm()
+})
+
+eventHub.addEventListener("showReviews", customEvent => {
+    reviewEditForm()
+})
+
+eventHub.addEventListener("deleteReview", customEvent => {
+    const reviewId = customEvent.detail.selectedReview
+    deleteReview(reviewId)
+    reviewEditForm()
+    ProductList()
+
+})

@@ -20,6 +20,7 @@ const render = (customer) => {
     <li class="userNav__link" id="userNav--showCart" style="cursor: pointer">My Cart</li>
     <li class="userNav__link" id="userNav--newReview" style="cursor: pointer">New Review</li>
     <li class="userNav__link" id="userNav--pastOrders" style="cursor: pointer">Order History</li>
+    <li class="userNav__link" id="userNav--myReviews" style="cursor: pointer">My Reviews</li>
     <li class="userNav__link" id="userNav--logout" style="cursor: pointer">Logout</li>
     </ul>
   `
@@ -47,6 +48,9 @@ eventHub.addEventListener("click", event => {
         authHelper.clearSessionStorage()
         userNav.innerHTML = ""    
         customEvent = new CustomEvent("showLoginForm")
+      case "myReviews":
+        customEvent = new CustomEvent("showReviews")
+        break;
     }
     eventHub.dispatchEvent(customEvent)
   }

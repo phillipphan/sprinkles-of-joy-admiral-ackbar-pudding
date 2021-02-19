@@ -47,7 +47,6 @@ const render = (ordersHtmlRepresentation) => {
       <div class="modal--content">
         <h3>Previous Orders</h3>
         <div>
-        <h5>Ordered on</h5>
         ${ordersHtmlRepresentation}
         </div>
         <button id="modal--close">Close</button>

@@ -37,13 +37,18 @@ eventHub.addEventListener("categorySelected", e => {
   getProducts()
     .then(getCategories)
     .then(() => {
-      let chosenCategory = e.detail.selectedCategory
       const products = useProducts()
       const categories = useCategories()
 
-      const filteredProducts = products.filter(product => product.categoryId === parseInt(chosenCategory))
-      chosenCategory = categories.filter(cat => cat.id === parseInt(chosenCategory))
-
-      render(filteredProducts, chosenCategory)
+      if(e.detail.selectedCategory === "0"){
+        render(products, categories)
+      } else{
+        let chosenCategory = e.detail.selectedCategory
+  
+        const filteredProducts = products.filter(product => product.categoryId === parseInt(chosenCategory))
+        chosenCategory = categories.filter(cat => cat.id === parseInt(chosenCategory))
+  
+        render(filteredProducts, chosenCategory)
+      }
     })
 })

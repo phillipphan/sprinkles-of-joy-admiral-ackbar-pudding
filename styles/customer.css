@@ -13,3 +13,22 @@
   display: flex;
   justify-content: space-between;
 }
+
+#dropdownTitle {
+  margin-bottom: 2px;
+}
+
+#productDropdown {
+  margin-bottom: 10px;
+}
+
+#reviewDate {
+  margin-bottom: 10px;
+}
+#rating {
+  margin-bottom: 10px;
+}
+
+.review {
+  background-color: white;
+}
