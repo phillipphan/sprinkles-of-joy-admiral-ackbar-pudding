@@ -10,10 +10,17 @@ export const Product = (product, category, reviews) => {
           <div>
               <button id="addProduct--${product.id}">Add to Cart</button>
               <p>${product.description} [${category.name}]</p>
-              <div class="reviews">${reviews.map(rev => {
-                  return `<p>${rev.text}</p><p>${rev.rating}</p>`
+              <div class="reviews">
+              <h3>Reviews</h3>
+              ${reviews.map(rev => {
+                  return `<div class="review">
+                  <div class="date">${rev.date}</div>
+                  <p>${rev.text}</p>
+                  <p>${rev.rating}/5</p>
+                  </div>`
               }                
-                ).join("")}</div>
+                ).join("")}
+              
           </div>
       </section>
   `
