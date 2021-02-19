@@ -1,9 +1,8 @@
 //import statements
 import { authHelper } from "../auth/authHelper.js"
-import { getCustomer, getCustomers, useCustomers } from "../customers/CustomerProvider.js"
-import { ProductList } from "../products/ProductList.js"
+import {  useCustomers, getCustomers } from "../customers/CustomerProvider.js"
 import { getProducts, useProducts } from "../products/ProductProvider.js"
-import { getReviews, saveReview, useReviews } from "../reviews/ReviewProvider.js" 
+import { getReviews, useReviews } from "../reviews/ReviewProvider.js" 
 
 //define eventHub 
 const eventHub = document.querySelector("#container")
@@ -11,11 +10,11 @@ const eventHub = document.querySelector("#container")
 //define contentTarget that will house reviews
 const contentTarget = document.querySelector(".newReview")
 
-let userId = []
-let userName = []
-let products = []
 
 
+
+
+let users = []
 
 
 //function that pulls all reviews by current user
@@ -25,22 +24,23 @@ export const reviewEditForm = () => {
     .then(getProducts)
     .then(() => {
         
-        // userName = getCustomer(authHelper.getCurrentUserId())
-        userId = authHelper.getCurrentUserId()
-        products = useProducts()
+        const userId = authHelper.getCurrentUserId()
+        users = useCustomers()
+        const user = users.find(cust => cust.id === parseInt(userId)).name
+        
         let allReviews = useReviews()
 
         const reviews = allReviews.filter(
             rev => rev.userId === parseInt(userId)
         )
         
-        renderEditReview(userId, products, reviews)  
+        renderEditReview(reviews, user)  
     }) 
     
 }
 
 //renders HTML for reviews
-export const renderEditReview = (userId, products, reviews) => {
+export const renderEditReview = (reviews, userName) => {
     
     contentTarget.innerHTML = `
     <div id="reviews__modal" class="modal--parent">
