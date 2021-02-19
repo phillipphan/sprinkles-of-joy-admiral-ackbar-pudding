@@ -43,11 +43,4 @@ export const deleteOrder = (id) => {
     method: "DELETE"
   })
   .then(getOrders)
-  .then(dispatchStateChangeEvent)
-}
-
-const dispatchStateChangeEvent = () => {
-  const ordersStateChangedEvent = new CustomEvent("ordersStateChanged")
-
-  eventHub.dispatchEvent(ordersStateChangedEvent)
 }
