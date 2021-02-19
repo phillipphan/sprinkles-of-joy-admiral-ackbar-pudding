@@ -1,3 +1,5 @@
+import { authHelper } from "../auth/authHelper.js"
+
 const eventHub = document.querySelector("#container")
 
 export const Product = (product, category, reviews) => {
@@ -21,6 +23,9 @@ export const Product = (product, category, reviews) => {
 
 eventHub.addEventListener("click", evt => {
     if (evt.target.id.startsWith("addProduct--")) {
+        if (authHelper.getCurrentUserId() === null){
+            
+        }
         const [prefix, productId] = evt.target.id.split("--")
         const addProductEvent = new CustomEvent("addToCart", {
             detail: {
