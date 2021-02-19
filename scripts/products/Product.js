@@ -1,3 +1,5 @@
+import { authHelper } from "../auth/authHelper.js"
+
 const eventHub = document.querySelector("#container")
 
 export const Product = (product, category, reviews) => {
