@@ -48,6 +48,7 @@ eventHub.addEventListener("click", event => {
         authHelper.clearSessionStorage()
         userNav.innerHTML = ""    
         customEvent = new CustomEvent("showLoginForm")
+        break;
       case "myReviews":
         customEvent = new CustomEvent("showReviews")
         break;
