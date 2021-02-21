@@ -46,7 +46,7 @@ export const saveReview = entry => {
 
 
 //put new reviews on the DOM once they've been submitted or deleted
-export const dispatchStateChangeEvent = () => {
+const dispatchStateChangeEvent = () => {
     const reviewStateChangedEvent = new CustomEvent("reviewStateChanged")
 
     eventHub.dispatchEvent(reviewStateChangedEvent)

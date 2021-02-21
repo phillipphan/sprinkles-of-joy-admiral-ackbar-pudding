@@ -2,6 +2,7 @@ import { authHelper } from "../auth/authHelper.js"
 import { getCustomers, useCustomers } from "../customers/CustomerProvider.js"
 import { ProductList } from "../products/ProductList.js"
 import { editReview, getReviews, useReviews } from "./ReviewProvider.js"
+import { userReviews } from "./Reviews.js"
 
 
 //define eventHub 
@@ -73,11 +74,11 @@ export const renderEditReview = (review, user) => {
             <option value="5">5</option>
         </select><br>
         <label for="reviewText">Review:</label><br>
-        <textarea resize:none rows="22" cols="81" id="reviewText">${review.text}</textarea><br>
+        <textarea resize:none rows="20" cols="79" id="reviewText">${review.text}</textarea><br>
         <button id="deleteReview--${review.id}">Delete Review</button>
         <button id="saveEdit--${review.id}">Save Review</button>
     </div>
-    <button id="modal--close">Close</button>
+    <button id="modal--closeEdit">Close</button>
         `
     }                
       
@@ -85,17 +86,23 @@ export const renderEditReview = (review, user) => {
 
 
 
+    //listens for click on close button in review form
+    eventHub.addEventListener("click", event => {
+        if (event.target.id === "modal--closeEdit") {
+          userReviews()
+        }
+      })
 
 
 
-
-
-//listens for click on close button in review form
-eventHub.addEventListener("click", event => {
-    if (event.target.id === "modal--close") {
-      closeModal()
-    }
-  })
+    
+    
+    //listens for click on close button in review form
+    eventHub.addEventListener("click", event => {
+        if (event.target.id === "modal--close") {
+          closeModal()
+        }
+      })
 
 //function to close review form
 const closeModal = () => {
