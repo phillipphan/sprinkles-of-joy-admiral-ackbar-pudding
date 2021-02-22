@@ -13,9 +13,29 @@ export const CustomerNav = () => {
   }
 }
 
-const render = (customer) => {
+let rewardsHTML = (customer) => {
+
+  if (customer.rewardsMember === false) {
+    let rewardsHTML = '<button id="joinRewards">Join our rewards program</button>'
+    return rewardsHTML
+  } else {
+    let rewardsHTML = "Thanks for being a rewards member!"
+    return rewardsHTML
+  }
+} 
+
+eventHub.addEventListener("click", event => {
+  if (event.target.id ="joinRewards") {
+    joinRewards()
+  }
+})
+
+  const render = (customer) => {
+
+
   userNav.innerHTML = `
     <h3>Welcome ${customer.name}!</h3>
+    <h4>${rewardsHTML(customer)}</h4>
     <ul class="userNav__links">
     <li class="userNav__link" id="userNav--showCart" style="cursor: pointer">My Cart</li>
     <li class="userNav__link" id="userNav--newReview" style="cursor: pointer">New Review</li>
