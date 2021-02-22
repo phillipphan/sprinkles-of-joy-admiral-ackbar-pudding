@@ -1,4 +1,4 @@
-import { deleteOrder } from "./OrderProvider.js"
+import { deleteOrder, getOrders, useOrders } from "./OrderProvider.js"
 import { OrderList } from "./OrderList.js"
 
 const eventHub = document.querySelector("#container")
@@ -32,7 +32,11 @@ eventHub.addEventListener("click", e => {
   if (e.target.id.startsWith("deleteOrder")) {
     const [prefix, id] = e.target.id.split("--")
 
-    deleteOrder(id)
-      .then(OrderList())
+    const deletedOrder = {
+      "isDeleted": true
+    }
+
+    deleteOrder(id, deletedOrder)
+      .then(OrderList)
   }
 })
