@@ -6,7 +6,7 @@ const eventHub = document.querySelector("#container")
 
 const reviewSection = (reviews) => {
     if (reviews.length < 1){
-        return
+        return ""
     } else {
         return `
         <h4>Reviews</h4>
@@ -27,12 +27,12 @@ export const Product = (product, category, reviews) => {
     return `
       <section class="baked_good">
           <header class="baked_good__header">
-              <h3>${product.name}</h3>
+              <h3>${product.name} [${category.name}]</h3>
               <p>$${product.price}</p>
           </header>
           <div>
               <button id="addProduct--${product.id}">Add to Cart</button>
-              <p>${product.description} [${category.name}]</p>
+              <p>${product.description}</p>
               <div class="reviews">
               ${reviewSection(reviews)}
               </div>
