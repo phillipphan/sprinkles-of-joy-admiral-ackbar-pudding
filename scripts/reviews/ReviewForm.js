@@ -47,11 +47,11 @@ const renderReviewForm = (productArray) => {
         <input type="date" id="reviewDate"><br>
         <label for="rating">Rating::</label><br>
         <select id="rating">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+            <option value="1">&#9733 &#9734 &#9734 &#9734 &#9734</option>
+            <option value="2">&#9733 &#9733 &#9734 &#9734 &#9734</option>
+            <option value="3">&#9733 &#9733 &#9733 &#9734 &#9734</option>
+            <option value="4">&#9733 &#9733 &#9733 &#9733 &#9734</option>
+            <option value="5">&#9733 &#9733 &#9733 &#9733 &#9733</option>
         </select><br>
         <label for="reviewText">Review:</label><br>
         <textarea rows="22" cols="85" id="reviewText"></textarea><br>
@@ -88,7 +88,6 @@ eventHub.addEventListener("click", clickEvent => {
         console.log('allProducts: ', allProducts);
         console.log(typeof(allProducts))
         const product = document.getElementById("productDropdown").value
-        const productName = allProducts.find(prod => prod.id === parseInt(product)).name
         const reviewDate = document.getElementById("reviewDate").value
         const rating = document.getElementById("rating").value
         const reviewText = document.getElementById("reviewText").value
@@ -97,7 +96,6 @@ eventHub.addEventListener("click", clickEvent => {
         // Key/value pairs here
         const newReview = {
             "productId": parseInt(product),
-            "productName": productName,
             "date": reviewDate,
             "rating": parseInt(rating),
             "text": reviewText,
