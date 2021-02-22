@@ -30,7 +30,7 @@ const render = (bakeryProducts, bakeryCategories) => {
     const reviews = allReviews.filter(review => review.productId === product.id)
 
     return Product(product, productCategory, reviews)
-  }).join("")
+  }).join("<br><hr>")
 }
 
 eventHub.addEventListener("categorySelected", e => {
