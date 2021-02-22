@@ -1,8 +1,7 @@
 import { bakeryAPI } from "../Settings.js"
 import { render } from "../customers/CustomerNav.js"
-import { CustomerNav } from "./CustomerNav.js"
 import { authHelper } from "../auth/authHelper.js"
-render
+
 
 let customers = []
 
@@ -27,6 +26,20 @@ export const customerLogin = (email, password) => {
 }
 
 
+//function to edit note
+export const joinRewards = (id, change) => {
+  return fetch(`http://localhost:8088/customers/${id}`, {
+      method: "PATCH",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(change)
+  })
+      
+
+}
+
+
 //registers a new user and posts to API
 export const saveMember = newUser => {
   return fetch(`${bakeryAPI.baseURL}/customers`, {
@@ -43,3 +56,4 @@ export const saveMember = newUser => {
   .then(user => authHelper.storeUserInSessionStorage(user.id))
   .then(render(newUser))
 }
+

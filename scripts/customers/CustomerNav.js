@@ -1,5 +1,5 @@
 import { authHelper } from "../auth/authHelper.js"
-import { getCustomer } from "../customers/CustomerProvider.js"
+import { getCustomer, getCustomers, joinRewards } from "../customers/CustomerProvider.js"
 
 const eventHub = document.querySelector("#container")
 const userNav = document.querySelector(".userNav")
@@ -13,9 +13,41 @@ export const CustomerNav = () => {
   }
 }
 
+
+let rewardsHTML = (customer) => {
+
+  if (customer.rewardsMember === false) {
+    let rewardsHTML = '<button id="joinRewards">Join our rewards program</button>'
+    return rewardsHTML
+  } else {
+    let rewardsHTML = "Thanks for being a rewards member!"
+    return rewardsHTML
+  }
+} 
+
+eventHub.addEventListener("click", event => {
+  
+  if (event.target.id === "joinRewards") {
+    
+    const userId = authHelper.getCurrentUserId()
+    const change = {"rewardsMember": true}
+   
+    joinRewards(userId, change)
+    userNav.innerHTML = ""
+    
+    getCustomers()
+      .then(CustomerNav)
+    
+
+  }
+})
+
+
 export const render = (customer) => {
+
   userNav.innerHTML = `
     <h3>Welcome ${customer.name}!</h3>
+    <h4>${rewardsHTML(customer)}</h4>
     <ul class="userNav__links">
     <li class="userNav__link" id="userNav--showCart" style="cursor: pointer">My Cart</li>
     <li class="userNav__link" id="userNav--newReview" style="cursor: pointer">New Review</li>
