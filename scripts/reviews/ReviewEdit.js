@@ -1,6 +1,7 @@
 import { authHelper } from "../auth/authHelper.js"
 import { getCustomers, useCustomers } from "../customers/CustomerProvider.js"
 import { ProductList } from "../products/ProductList.js"
+import { getProducts, useProducts } from "../products/ProductProvider.js"
 import { editReview, getReviews, useReviews } from "./ReviewProvider.js"
 import { userReviews } from "./Reviews.js"
 
@@ -32,14 +33,16 @@ let users = []
 export const getReview = (reviewId) => {
     getReviews()
     .then(getCustomers)
+    .then(getProducts)
     .then(() => {
         
+        const allProducts = useProducts()
         const allReviews = useReviews()
         const thisReview = allReviews.find(rev => rev.id === parseInt(reviewId))
         const userId = authHelper.getCurrentUserId()
         users = useCustomers()
         const user = users.find(cust => cust.id === parseInt(userId)).name
-        renderEditReview(thisReview, user)
+        renderEditReview(allProducts, thisReview, user)
     })
 
 }
@@ -54,7 +57,7 @@ eventHub.addEventListener("editReview", customEvent => {
 })
 
 //renders HTML for reviews
-export const renderEditReview = (review, user) => {
+export const renderEditReview = (allProducts, review, user) => {
     
     contentTarget.innerHTML = `
     <div id="reviews__modal" class="modal--parent">
@@ -64,14 +67,14 @@ export const renderEditReview = (review, user) => {
     <div>
         <div class="review">
         <div class="date"><b>Date: </b>${review.date}</div>
-        <p><b>Product: </b>${review.productName}</p>
+        <p><b>Product: </b>${allProducts.find(prod => prod.id === parseInt(review.productId)).name}</p>
         <label for="rating">Rating::</label><br>
         <select id="rating">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+            <option value="1">&#9733 &#9734 &#9734 &#9734 &#9734</option>
+            <option value="2">&#9733 &#9733 &#9734 &#9734 &#9734</option>
+            <option value="3">&#9733 &#9733 &#9733 &#9734 &#9734</option>
+            <option value="4">&#9733 &#9733 &#9733 &#9733 &#9734</option>
+            <option value="5">&#9733 &#9733 &#9733 &#9733 &#9733</option>
         </select><br>
         <label for="reviewText">Review:</label><br>
         <textarea resize:none rows="20" cols="79" id="reviewText">${review.text}</textarea><br>

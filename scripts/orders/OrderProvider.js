@@ -39,9 +39,13 @@ export const saveOrder = (order, productsInOrder) => {
     .then(() => getOrders())
 }
 
-export const deleteOrder = (id) => {
+export const deleteOrder = (id, order) => {
   return fetch(`${bakeryAPI.baseURL}/orders/${id}`, {
-    method: "DELETE"
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(order)
   })
   .then(getOrders)
 }
