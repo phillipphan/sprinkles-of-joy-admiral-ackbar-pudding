@@ -54,7 +54,7 @@ const renderReviewForm = (productArray) => {
             <option value="5">&#9733 &#9733 &#9733 &#9733 &#9733</option>
         </select><br>
         <label for="reviewText">Review:</label><br>
-        <textarea rows="22" cols="85" id="reviewText"></textarea><br>
+        <textarea rows="10" cols="85" id="reviewText"></textarea><br>
     </div>
     <button id="submitReview">Submit Review</button>
     <button id="modal--close">Close</button>
