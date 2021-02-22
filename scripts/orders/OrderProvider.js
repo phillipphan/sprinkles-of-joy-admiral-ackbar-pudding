@@ -32,10 +32,11 @@ export const saveOrder = (order, productsInOrder) => {
           "productId": product.id
         }
       })
-      return saveOrderProducts(orderProducts)
+      orderProducts.map(op => {
+        saveOrderProducts(op)
+      })
     })
     .then(() => getOrders())
-    .then(dispatchStateChangeEvent)
 }
 
 export const deleteOrder = (id) => {

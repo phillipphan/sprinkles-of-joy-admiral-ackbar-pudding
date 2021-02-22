@@ -35,7 +35,7 @@ export const OrderList = () => {
           let totalPrice = 0
           matchingProducts.map(product => totalPrice += product.price)
 
-          return Order(order, matchingProducts, totalPrice)
+          return Order(order, matchingProducts, totalPrice.toFixed(2))
         }).join("")
 
         render(orderHistory)
