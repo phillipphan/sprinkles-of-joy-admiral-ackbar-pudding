@@ -5,6 +5,7 @@ import "./orders/OpenCart.js"
 import "./orders/OrderList.js"
 import "./contactForm/ContactForm.js"
 import "./reviews/ReviewList.js"
+import "./about/about.js"
 
 
 import { CustomerNav } from "./customers/CustomerNav.js"
