@@ -12,15 +12,12 @@ export const getOrderProducts = () => {
     })
 }
 
-export const saveOrderProducts = (orderProductsArray) => {
-  const orderProductsPromiseArray = orderProductsArray.map(op => {
-    return fetch(`${bakeryAPI.baseURL}/orderproducts`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(op)
-    })
+export const saveOrderProducts = (op) => {
+  return fetch(`${bakeryAPI.baseURL}/orderproducts`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(op)
   })
-  return Promise.all(orderProductsPromiseArray)
 }

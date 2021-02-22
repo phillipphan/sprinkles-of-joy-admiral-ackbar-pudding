@@ -70,7 +70,7 @@ eventHub.addEventListener("click", clickEvent => {
     } else {
       if (productsInCart.length < 1) {
         document.querySelector(".cart__warning").innerHTML = "You have no items in your cart!"
-      }else if (productsInCart.length !== 0) {
+      }else {
         const currentCustomerId = parseInt(authHelper.getCurrentUserId())
         getStatuses()
           .then(() => {
@@ -82,7 +82,6 @@ eventHub.addEventListener("click", clickEvent => {
               "statusId": initialOrderStatus.id,
               "timestamp": Date.now()
             }
-    
             saveOrder(newOrder, productsInCart)
               .then(() => {
                 productsInCart = []
