@@ -23,8 +23,13 @@ export const OrderList = () => {
         orderProducts = useOrderProducts()
         products = useProducts()
 
-        customerOrders = useOrders()
+        customerOrders = useOrders().sort(
+          (currentOrder, nextOrder) => 
+            Date.parse(currentOrder.timestamp) - Date.parse(nextOrder.timestamp)
+        ).reverse()
+
         customerOrders = customerOrders.filter(order => order.customerId === parseInt(authHelper.getCurrentUserId()))
+        customerOrders = customerOrders.filter(order => order.isDeleted === false)
 
         const orderHistory = customerOrders.map(order => {
           let matchingProducts = orderProducts.filter(op => op.orderId === order.id)
@@ -68,36 +73,28 @@ eventHub.addEventListener("showPastOrders", () => {
 
 eventHub.addEventListener("change", e => {
   if (e.target.id === "order__status") {
-    const customEvent = new CustomEvent("orderListChange", {
-      detail: {
-        "chosenStatus": parseInt(e.target.value)
-      }
-    })
-    eventHub.dispatchEvent(customEvent)
+    if (e.target.selectedIndex === 0){
+      OrderList()
+    } else {
+      const chosenStatus = e.target.selectedIndex
+    
+      let filteredOrderHistory = customerOrders.filter(order => order.statusId === chosenStatus)
+    
+      filteredOrderHistory = filteredOrderHistory.map(order => {
+        let matchingProducts = orderProducts.filter(op => op.orderId === order.id)
+        matchingProducts = matchingProducts.map(op => products.find(product => product.id === op.productId))
+    
+        let totalPrice = 0
+        matchingProducts.map(product => totalPrice += product.price)
+    
+        return Order(order, matchingProducts, totalPrice.toFixed(2))
+      }).join("")
+    
+      document.querySelector(".orders__list").innerHTML = filteredOrderHistory
+    }
   }
 })
 
-eventHub.addEventListener("orderListChange", e => {
-  if (e.detail.chosenStatus === 0){
-    OrderList()
-  } else {
-    const chosenStatus = e.detail.chosenStatus
-
-    let filteredOrderHistory = customerOrders.filter(order => order.statusId === chosenStatus)
-
-    filteredOrderHistory = filteredOrderHistory.map(order => {
-      let matchingProducts = orderProducts.filter(op => op.orderId === order.id)
-      matchingProducts = matchingProducts.map(op => products.find(product => product.id === op.productId))
-
-      let totalPrice = 0
-      matchingProducts.map(product => totalPrice += product.price)
-
-      return Order(order, matchingProducts, totalPrice)
-    }).join("")
-
-    document.querySelector(".orders__list").innerHTML = filteredOrderHistory
-  }
-})
 
 eventHub.addEventListener("click", event => {
   if (event.target.id === "modal--close") {
