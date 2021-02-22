@@ -12,7 +12,7 @@ const eventHub = document.querySelector("#container")
 //define contentTarget that will house reviews
 const contentTarget = document.querySelector(".newReview")
 
-
+//get crrent user name
 export const getUser = () => {
     getReviews()
     .then(getCustomers)
@@ -27,9 +27,7 @@ export const getUser = () => {
     
 }
 
-let users = []
-
-
+//get information from current review to be passed to render function
 export const getReview = (reviewId) => {
     getReviews()
     .then(getCustomers)
@@ -38,16 +36,20 @@ export const getReview = (reviewId) => {
         
         const allProducts = useProducts()
         const allReviews = useReviews()
+        const allUsers = useCustomers()
+        
         const thisReview = allReviews.find(rev => rev.id === parseInt(reviewId))
         const userId = authHelper.getCurrentUserId()
-        users = useCustomers()
-        const user = users.find(cust => cust.id === parseInt(userId)).name
+        const user = allUsers.find(cust => cust.id === parseInt(userId)).name
+        
+        
+        //renders a modal window that allows users to edit their reviews
         renderEditReview(allProducts, thisReview, user)
     })
 
 }
 
-
+//listener for "Edit Review" button
 eventHub.addEventListener("editReview", customEvent => {
     const reviewId = customEvent.detail.selectedReview
     
@@ -55,6 +57,45 @@ eventHub.addEventListener("editReview", customEvent => {
     
 
 })
+
+const currentRating = (rating) => {
+    if (parseInt(rating) === 1) {
+        return `
+        <option value="1" selected>&#9733 &#9734 &#9734 &#9734 &#9734</option>
+        <option value="2">&#9733 &#9733 &#9734 &#9734 &#9734</option>
+        <option value="3">&#9733 &#9733 &#9733 &#9734 &#9734</option>
+        <option value="4">&#9733 &#9733 &#9733 &#9733 &#9734</option>
+        <option value="5">&#9733 &#9733 &#9733 &#9733 &#9733</option>`
+    } else if (parseInt(rating) === 2) {
+        return `
+        <option value="1">&#9733 &#9734 &#9734 &#9734 &#9734</option>
+        <option value="2" selected>&#9733 &#9733 &#9734 &#9734 &#9734</option>
+        <option value="3">&#9733 &#9733 &#9733 &#9734 &#9734</option>
+        <option value="4">&#9733 &#9733 &#9733 &#9733 &#9734</option>
+        <option value="5">&#9733 &#9733 &#9733 &#9733 &#9733</option>`
+    } else if (parseInt(rating) === 3) {
+        return `
+        <option value="1">&#9733 &#9734 &#9734 &#9734 &#9734</option>
+        <option value="2">&#9733 &#9733 &#9734 &#9734 &#9734</option>
+        <option value="3" selected>&#9733 &#9733 &#9733 &#9734 &#9734</option>
+        <option value="4">&#9733 &#9733 &#9733 &#9733 &#9734</option>
+        <option value="5">&#9733 &#9733 &#9733 &#9733 &#9733</option>`
+    } else if (parseInt(rating) === 4) {
+        return `
+        <option value="1">&#9733 &#9734 &#9734 &#9734 &#9734</option>
+        <option value="2">&#9733 &#9733 &#9734 &#9734 &#9734</option>
+        <option value="3">&#9733 &#9733 &#9733 &#9734 &#9734</option>
+        <option value="4" selected>&#9733 &#9733 &#9733 &#9733 &#9734</option>
+        <option value="5">&#9733 &#9733 &#9733 &#9733 &#9733</option>`
+    } else if (parseInt(rating) === 5) {
+        return `
+        <option value="1">&#9733 &#9734 &#9734 &#9734 &#9734</option>
+        <option value="2">&#9733 &#9733 &#9734 &#9734 &#9734</option>
+        <option value="3">&#9733 &#9733 &#9733 &#9734 &#9734</option>
+        <option value="4">&#9733 &#9733 &#9733 &#9733 &#9734</option>
+        <option value="5" selected>&#9733 &#9733 &#9733 &#9733 &#9733</option>`
+    }
+}
 
 //renders HTML for reviews
 export const renderEditReview = (allProducts, review, user) => {
@@ -70,11 +111,7 @@ export const renderEditReview = (allProducts, review, user) => {
         <p><b>Product: </b>${allProducts.find(prod => prod.id === parseInt(review.productId)).name}</p>
         <label for="rating">Rating::</label><br>
         <select id="rating">
-            <option value="1">&#9733 &#9734 &#9734 &#9734 &#9734</option>
-            <option value="2">&#9733 &#9733 &#9734 &#9734 &#9734</option>
-            <option value="3">&#9733 &#9733 &#9733 &#9734 &#9734</option>
-            <option value="4">&#9733 &#9733 &#9733 &#9733 &#9734</option>
-            <option value="5">&#9733 &#9733 &#9733 &#9733 &#9733</option>
+            ${currentRating(review.rating)}
         </select><br>
         <label for="reviewText">Review:</label><br>
         <textarea resize:none rows="20" cols="79" id="reviewText">${review.text}</textarea><br>
@@ -95,9 +132,6 @@ export const renderEditReview = (allProducts, review, user) => {
           userReviews()
         }
       })
-
-
-
     
     
     //listens for click on close button in review form
