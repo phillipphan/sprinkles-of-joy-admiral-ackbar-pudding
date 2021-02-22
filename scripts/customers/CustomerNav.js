@@ -1,5 +1,5 @@
 import { authHelper } from "../auth/authHelper.js"
-import { getCustomer } from "../customers/CustomerProvider.js"
+import { getCustomer, getCustomers, joinRewards } from "../customers/CustomerProvider.js"
 
 const eventHub = document.querySelector("#container")
 const userNav = document.querySelector(".userNav")
@@ -25,10 +25,18 @@ let rewardsHTML = (customer) => {
 } 
 
 eventHub.addEventListener("click", event => {
-  if (event.target.id ="joinRewards") {
+  
+  if (event.target.id === "joinRewards") {
+    
     const userId = authHelper.getCurrentUserId()
-    const change = ["rewardsMember": true]
+    const change = {"rewardsMember": true}
+   
     joinRewards(userId, change)
+    userNav.innerHTML = ""
+    
+    getCustomers()
+      .then(CustomerNav)
+    
 
   }
 })
