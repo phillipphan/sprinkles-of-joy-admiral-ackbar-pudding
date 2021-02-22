@@ -13,6 +13,7 @@ export const CustomerNav = () => {
   }
 }
 
+
 let rewardsHTML = (customer) => {
 
   if (customer.rewardsMember === false) {

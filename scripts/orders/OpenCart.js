@@ -19,7 +19,8 @@ const render = () => {
   for (const product of productsInCart) {
     cartHTML += `
       <div class="cart">
-        <p>${product.name}</p>
+        <p>${product.name} (<a href="#" id="removeItem--${productsInCart.indexOf(product)}">Remove</a>)</p>
+        
         <p>$${product.price.toFixed(2)}</p>
       </div>
     `
@@ -28,7 +29,7 @@ const render = () => {
 
   userCart.innerHTML = `
     <div>
-    <h4>Cart</h4>
+    <h4>Cart (${productsInCart.length} Item(s))</h4>
     ${cartHTML}
     <hr/>
     <div class="cart">
@@ -53,29 +54,44 @@ eventHub.addEventListener("addToCart", event => {
     })
 })
 
+eventHub.addEventListener("click", e => {
+  if (e.target.id.startsWith("removeItem--")) {
+    const [prefix, index] = e.target.id.split("--")
+
+    productsInCart.splice(index, 1)
+    OpenCart()
+  }
+})
+
 eventHub.addEventListener("click", clickEvent => {
-  if (clickEvent.target.id === "placeOrder" && productsInCart.length < 1) {
-    document.querySelector(".cart__warning").innerHTML = "You have no items in your cart!"
-  }else if (clickEvent.target.id === "placeOrder" && productsInCart.length !== 0) {
-    const currentCustomerId = parseInt(authHelper.getCurrentUserId())
-    getStatuses()
-      .then(() => {
-        const allStatuses = useStatuses()
-        const initialOrderStatus = allStatuses.find(status => status.label.toLowerCase() === "Scheduled".toLowerCase())
-
-        const newOrder = {
-          "customerId": currentCustomerId,
-          "statusId": initialOrderStatus.id,
-          "timestamp": Date.now()
-        }
-
-        saveOrder(newOrder, productsInCart)
+  if (clickEvent.target.id === "placeOrder") {
+    if (authHelper.getCurrentUserId() === null){
+      document.querySelector(".cart__warning").innerHTML = "You must sign in to place an order!"
+    } else {
+      if (productsInCart.length < 1) {
+        document.querySelector(".cart__warning").innerHTML = "You have no items in your cart!"
+      }else if (productsInCart.length !== 0) {
+        const currentCustomerId = parseInt(authHelper.getCurrentUserId())
+        getStatuses()
           .then(() => {
-            productsInCart = []
-            const customEvent = new CustomEvent("showCustomerCart")
-            eventHub.dispatchEvent(customEvent)
-            document.querySelector(".cart__warning").innerHTML = "Order added!"
+            const allStatuses = useStatuses()
+            const initialOrderStatus = allStatuses.find(status => status.label.toLowerCase() === "Scheduled".toLowerCase())
+    
+            const newOrder = {
+              "customerId": currentCustomerId,
+              "statusId": initialOrderStatus.id,
+              "timestamp": Date.now()
+            }
+    
+            saveOrder(newOrder, productsInCart)
+              .then(() => {
+                productsInCart = []
+                const customEvent = new CustomEvent("showCustomerCart")
+                eventHub.dispatchEvent(customEvent)
+                document.querySelector(".cart__warning").innerHTML = "Order added!"
+              })
           })
-      })
+      }
+    }
   }
 })

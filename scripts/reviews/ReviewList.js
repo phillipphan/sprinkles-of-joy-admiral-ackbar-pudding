@@ -1,8 +1,9 @@
 //import statements
 import { ProductList } from "../products/ProductList.js"
-import { reviewEditForm } from "./reviewDelete.js"
+import { userReviews } from "./Reviews.js"
 import { reviewForm } from "./ReviewForm.js"
-import { deleteReview } from "./ReviewProvider.js"
+import { deleteReview, editReview } from "./ReviewProvider.js"
+
 // import { renderEditReview } from "./ReviewDelete"
 
 //define eventHub 
@@ -15,19 +16,29 @@ eventHub.addEventListener("showNewReviewForm", customEvent => {
 })
     
 
-//listener for new review button that displays pop up window
+//listener for My Reviews button that displays user reviews
 eventHub.addEventListener("showReviews", customEvent => {
-    reviewEditForm()
+    // const reviewId = customEvent.detail.selectedReview
+    userReviews()
 })
 
-eventHub.addEventListener("showReviews", customEvent => {
-    reviewEditForm()
+
+
+eventHub.addEventListener("saveEditReview", customEvent => {
+    const reviewId = customEvent.detail.selectedReview
+    editReview(reviewId)
+    userReviews()
+    ProductList()
+
 })
+
+
+
 
 eventHub.addEventListener("deleteReview", customEvent => {
     const reviewId = customEvent.detail.selectedReview
     deleteReview(reviewId)
-    reviewEditForm()
+    userReviews()
     ProductList()
 
 })

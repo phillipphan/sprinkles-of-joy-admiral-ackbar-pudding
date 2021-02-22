@@ -1,9 +1,8 @@
 //import statements
 import { authHelper } from "../auth/authHelper.js"
-import { getCustomer, getCustomers, useCustomers } from "../customers/CustomerProvider.js"
-import { ProductList } from "../products/ProductList.js"
-import { getProducts, useProducts } from "../products/ProductProvider.js"
-import { getReviews, saveReview, useReviews } from "../reviews/ReviewProvider.js" 
+import {  useCustomers, getCustomers } from "../customers/CustomerProvider.js"
+import { renderEditReview } from "./ReviewEdit.js"
+import { getReviews, useReviews } from "./ReviewProvider.js" 
 
 //define eventHub 
 const eventHub = document.querySelector("#container")
@@ -11,36 +10,36 @@ const eventHub = document.querySelector("#container")
 //define contentTarget that will house reviews
 const contentTarget = document.querySelector(".newReview")
 
-let userId = []
-let userName = []
-let products = []
 
 
+
+
+let users = []
 
 
 //function that pulls all reviews by current user
-export const reviewEditForm = () => {
+export const userReviews = () => {
     getReviews()
     .then(getCustomers)
-    .then(getProducts)
     .then(() => {
         
-        // userName = getCustomer(authHelper.getCurrentUserId())
-        userId = authHelper.getCurrentUserId()
-        products = useProducts()
+        const userId = authHelper.getCurrentUserId()
+        users = useCustomers()
+        const user = users.find(cust => cust.id === parseInt(userId)).name
+        
         let allReviews = useReviews()
 
         const reviews = allReviews.filter(
             rev => rev.userId === parseInt(userId)
         )
         
-        renderEditReview(userId, products, reviews)  
+        renderUserReview(reviews, user)  
     }) 
     
 }
 
 //renders HTML for reviews
-export const renderEditReview = (userId, products, reviews) => {
+const renderUserReview = (reviews, userName) => {
     
     contentTarget.innerHTML = `
     <div id="reviews__modal" class="modal--parent">
@@ -49,16 +48,15 @@ export const renderEditReview = (userId, products, reviews) => {
     <h3>${userName}</h3>
     <div>${reviews.map(rev => {
         return `<div class="review">
-        <div class="date">${rev.date}</div>
-        <p>${rev.productName}</p>
-        <p>${rev.text}</p>
-        <p>${rev.rating}/5</p>
+        <div class="date" id="date"><b>Date: </b>${rev.date}</div>
+        <p id="productName">Product: ${rev.productName}</p>
+        <p id="reviewText">Review: ${rev.text}</p>
+        <p id="rating">Rating: ${rev.rating}/5</p>
         <button id="deleteReview--${rev.id}">Delete Review</button>
         <button id="editReview--${rev.id}">Edit Review</button>
         </div>
         `
-    }                
-      ).join("")}
+    }).join("")}
       <button id="modal--close">Close</button>
 </div>
     </div>
@@ -69,12 +67,15 @@ export const renderEditReview = (userId, products, reviews) => {
 //listens for click on edit button in review form
 eventHub.addEventListener("click", event => {
     if (event.target.id.startsWith("editReview--")) {
+        
         const [idPrefix, idSuffix] = event.target.id.split("--")
+
+        
         
         //create new custom event to be dispatched
         const editReviewCustomEvent = new CustomEvent("editReview", {
             detail: {
-                selectedReview: idSuffix
+                selectedReview: idSuffix,
             }
         })
         //dispatch the custom event
