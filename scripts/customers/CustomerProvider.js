@@ -21,3 +21,16 @@ export const customerLogin = (email, password) => {
     .then(res => res.json())
     .then(user => user.length ? user[0] : false)
 }
+
+//function to edit note
+export const joinRewards = (id, change) => {
+  return fetch(`http://localhost:8088/customers/${id}`, {
+      method: "PATCH",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(change)
+  })
+      
+
+}

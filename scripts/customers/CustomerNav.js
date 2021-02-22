@@ -26,12 +26,15 @@ let rewardsHTML = (customer) => {
 
 eventHub.addEventListener("click", event => {
   if (event.target.id ="joinRewards") {
-    joinRewards()
+    const userId = authHelper.getCurrentUserId()
+    const change = ["rewardsMember": true]
+    joinRewards(userId, change)
+
   }
 })
 
-  const render = (customer) => {
 
+const render = (customer) => {
 
   userNav.innerHTML = `
     <h3>Welcome ${customer.name}!</h3>
