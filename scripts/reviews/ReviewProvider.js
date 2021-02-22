@@ -15,6 +15,22 @@ export const getReviews = () => {
     })
 }
 
+
+//function to edit note
+export const editReview = (id, reviewEdit) => {
+    return fetch(`http://localhost:8088/reviews/${id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(reviewEdit)
+    })
+        .then(getReviews)
+        .then(dispatchStateChangeEvent)
+
+}
+
+
 //saves current review and posts to API
 export const saveReview = entry => {
     return fetch(`${bakeryAPI.baseURL}/reviews`, {
@@ -27,6 +43,7 @@ export const saveReview = entry => {
     .then(getReviews)
     .then(dispatchStateChangeEvent)
 }
+
 
 //put new reviews on the DOM once they've been submitted or deleted
 const dispatchStateChangeEvent = () => {

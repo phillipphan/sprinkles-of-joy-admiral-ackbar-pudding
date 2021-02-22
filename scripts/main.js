@@ -10,6 +10,7 @@ import { CategorySelect } from "./categories/CategorySelect.js"
 import { LoginForm } from "./customers/LoginForm.js"
 import { ProductList } from "./products/ProductList.js"
 import { authHelper } from "./auth/authHelper.js"
+import { getUser } from "./reviews/ReviewEdit.js"
 
 
 
@@ -19,4 +20,4 @@ CustomerNav()
 CategorySelect()
 ProductList()
 
-
+getUser()
