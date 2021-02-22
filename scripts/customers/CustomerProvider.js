@@ -1,8 +1,7 @@
 import { bakeryAPI } from "../Settings.js"
 import { render } from "../customers/CustomerNav.js"
-import { CustomerNav } from "./CustomerNav.js"
 import { authHelper } from "../auth/authHelper.js"
-render
+
 
 let customers = []
 

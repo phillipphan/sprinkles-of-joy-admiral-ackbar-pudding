@@ -43,7 +43,7 @@ eventHub.addEventListener("click", event => {
 })
 
 
-const render = (customer) => {
+export const render = (customer) => {
 
   userNav.innerHTML = `
     <h3>Welcome ${customer.name}!</h3>
