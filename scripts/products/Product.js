@@ -1,4 +1,6 @@
-import { authHelper } from "../auth/authHelper.js"
+import { stars } from "../reviews/Reviews.js"
+
+
 
 const eventHub = document.querySelector("#container")
 
@@ -18,7 +20,7 @@ export const Product = (product, category, reviews) => {
                   return `<div class="review">
                   <div class="date">${rev.date}</div>
                   <p>${rev.text}</p>
-                  <p>${rev.rating}/5</p>
+                  <p>${stars(rev.rating)}</p>
                   </div>`
               }                
                 ).join("")}
