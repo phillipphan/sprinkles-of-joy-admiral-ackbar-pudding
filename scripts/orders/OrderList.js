@@ -4,11 +4,14 @@ import { Order } from "./Order.js"
 import { getOrders, useOrders } from "./OrderProvider.js"
 import { getProducts, useProducts } from "../products/ProductProvider.js"
 import { getOrderProducts, useOrderProducts } from "./OrderProductProvider.js"
+import { getStatuses, useStatuses } from "../statuses/StatusProvider.js"
 
 const eventHub = document.querySelector("#container")
 const contentContainer = document.querySelector(".userOrders")
 
 let customerOrders = []
+let orderProducts = []
+let products = []
 
 export const OrderList = () => {
   if (authHelper.isUserLoggedIn()) {
@@ -17,11 +20,11 @@ export const OrderList = () => {
       .then(getProducts)
       .then(getOrderProducts)
       .then(() => {
-        const orderProducts = useOrderProducts()
-        const products = useProducts()
+        orderProducts = useOrderProducts()
+        products = useProducts()
 
         customerOrders = useOrders()
-        customerOrders = customerOrders.filter(order => order.customerId === parseInt(sessionStorage.sojCustomerId))
+        customerOrders = customerOrders.filter(order => order.customerId === parseInt(authHelper.getCurrentUserId()))
 
         const orderHistory = customerOrders.map(order => {
           let matchingProducts = orderProducts.filter(op => op.orderId === order.id)
@@ -36,6 +39,7 @@ export const OrderList = () => {
         }).join("")
 
         render(orderHistory)
+        renderDropdown()
       })
   }
 }
@@ -46,7 +50,10 @@ const render = (ordersHtmlRepresentation) => {
     <div id="orders__modal" class="modal--parent">
       <div class="modal--content">
         <h3>Previous Orders</h3>
-        <div>
+        <select id="order__status">
+          <option value="0">All Orders</option>
+        </select>
+        <div class="orders__list">
         ${ordersHtmlRepresentation}
         </div>
         <button id="modal--close">Close</button>
@@ -59,6 +66,39 @@ eventHub.addEventListener("showPastOrders", () => {
   OrderList()
 })
 
+eventHub.addEventListener("change", e => {
+  if (e.target.id === "order__status") {
+    const customEvent = new CustomEvent("orderListChange", {
+      detail: {
+        "chosenStatus": parseInt(e.target.value)
+      }
+    })
+    eventHub.dispatchEvent(customEvent)
+  }
+})
+
+eventHub.addEventListener("orderListChange", e => {
+  if (e.detail.chosenStatus === 0){
+    OrderList()
+  } else {
+    const chosenStatus = e.detail.chosenStatus
+
+    let filteredOrderHistory = customerOrders.filter(order => order.statusId === chosenStatus)
+
+    filteredOrderHistory = filteredOrderHistory.map(order => {
+      let matchingProducts = orderProducts.filter(op => op.orderId === order.id)
+      matchingProducts = matchingProducts.map(op => products.find(product => product.id === op.productId))
+
+      let totalPrice = 0
+      matchingProducts.map(product => totalPrice += product.price)
+
+      return Order(order, matchingProducts, totalPrice)
+    }).join("")
+
+    document.querySelector(".orders__list").innerHTML = filteredOrderHistory
+  }
+})
+
 eventHub.addEventListener("click", event => {
   if (event.target.id === "modal--close") {
     closeModal()
@@ -67,4 +107,14 @@ eventHub.addEventListener("click", event => {
 
 const closeModal = () => {
   contentContainer.innerHTML = ""
+}
+
+const renderDropdown = () => {
+  getStatuses()
+    .then(() => {
+      const statuses = useStatuses()
+      document.querySelector("#order__status").innerHTML += `
+      ${statuses.map(status => `<option value="${status.id}">${status.label}</option>`).join("")}
+      `
+    })
 }
