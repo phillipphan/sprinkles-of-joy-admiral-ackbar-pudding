@@ -50,3 +50,15 @@ input::-webkit-inner-spin-button {
 .date {
 	font-weight: 900;
 }
+
+.catpics {
+	max-width: 40%
+}
+
+.cat__container {
+	display: flex;
+	max-width: 50%;
+	padding: 20px;
+	justify-content: end;
+
+}

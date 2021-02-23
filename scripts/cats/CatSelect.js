@@ -1,12 +1,14 @@
 //import statement for useCats & getCats
 
-import { useCats, getCats } from "../cats/catProvider.js"
+import { useCats, getCats, randomCat } from "../cats/catProvider.js"
 
 //define eventHub & querySelector()
 const eventHub = document.querySelector(".mainContainer")
 
 //define contentTarget & querySelector() that references where on the DOM <select> will be rendered
 const contentTarget = document.getElementById("cats")
+const catPicTarget = document.querySelector(".cat__container")
+
 
 //Listen for a change on eventHub. If eventListener detects a change, changeEvent function runs
 eventHub.addEventListener("change", changeEvent => {
@@ -17,13 +19,8 @@ eventHub.addEventListener("change", changeEvent => {
         const selectedCat = changeEvent.target.value
 
         //create new custom event to be dispatched
-        const catSelectedCustomEvent = new CustomEvent("catSelect", {
-            detail: {
-                id: selectedCat,
-            }
-        })
-        //dispatch the custom event
-        eventHub.dispatchEvent(catSelectedCustomEvent)
+        catPicTarget.innerHTML = ""
+        const catSelectedCustomEvent = randomCats(selectedCat)
         
     }
 })
@@ -48,4 +45,11 @@ const render = catCollection => {
         </select>
         `
 
+}
+
+
+const randomCats = (breed) => {
+  for (let i=0; i<5; i++){
+    console.log(randomCat(breed))
+  }
 }
