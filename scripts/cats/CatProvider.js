@@ -1,6 +1,7 @@
 import { renderCats } from "./cats.js"
 
 const contentTarget = document.getElementById("cats")
+const catPicTarget = document.querySelector(".cat__container")
 
 //declare an empty array for cats to live
 
@@ -26,6 +27,6 @@ export const randomCat = (breed) => {
         .then(response => response.json())
         .then(cat => catURL = cat[0].url)
         .then(() => {
-            contentTarget.innerHTML += renderCats(catURL)
+            catPicTarget.innerHTML += renderCats(catURL)
         })
     }
