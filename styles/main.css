@@ -52,13 +52,14 @@ input::-webkit-inner-spin-button {
 }
 
 .catpics {
-	max-width: 40%
+	max-width: 19%
 }
 
 .cat__container {
 	display: flex;
-	max-width: 50%;
+	flex-wrap: wrap;
+	max-width: 100%;
 	padding: 20px;
-	justify-content: end;
+	justify-content: space-evenly;
 
 }
