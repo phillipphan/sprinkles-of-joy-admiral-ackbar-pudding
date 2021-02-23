@@ -13,7 +13,7 @@ import { CategorySelect } from "./categories/CategorySelect.js"
 import { LoginForm } from "./customers/LoginForm.js"
 import { ProductList } from "./products/ProductList.js"
 import { CatSelect } from "./cats/CatSelect.js"
-import { getCats, useCats } from "./cats/CatProvider.js"
+import { getCats, randomCat, useCats } from "./cats/CatProvider.js"
 
 
 
@@ -23,3 +23,11 @@ CustomerNav()
 CategorySelect()
 ProductList()
 CatSelect()
+
+const randomCats = (breed) => {
+  for (let i=0; i<4; i++){
+    console.log(randomCat(breed))
+  }
+}
+
+randomCats("abys")
