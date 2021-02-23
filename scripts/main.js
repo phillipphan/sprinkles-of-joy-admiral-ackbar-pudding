@@ -6,7 +6,7 @@ import "./orders/OrderList.js"
 import "./contactForm/ContactForm.js"
 import "./reviews/ReviewList.js"
 import "./about/about.js"
-
+import "./cats/CatSelect.js"
 
 import { CustomerNav } from "./customers/CustomerNav.js"
 import { CategorySelect } from "./categories/CategorySelect.js"
@@ -24,10 +24,13 @@ CategorySelect()
 ProductList()
 CatSelect()
 
-const randomCats = (breed) => {
-  for (let i=0; i<4; i++){
-    console.log(randomCat(breed))
-  }
-}
+// const randomCats = (breed) => {
+//   for (let i=0; i<5; i++){
+//     console.log(randomCat(breed))
+//   }
+// }
 
-randomCats("abys")
+// randomCats("beng")
+// // randomCats("beng")
+// // randomCats("beng")
+// // randomCats("beng")

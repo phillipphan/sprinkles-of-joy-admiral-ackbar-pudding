@@ -1,4 +1,9 @@
+import { renderCats } from "./cats.js"
+
+const contentTarget = document.getElementById("cats")
+
 //declare an empty array for cats to live
+
 let cats = [];
 
 // returns cats as objects
@@ -14,8 +19,13 @@ export const getCats = () => {
     
 }
 
+let catURL = ""
 export const randomCat = (breed) => {
+    
     return fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${breed}`)
         .then(response => response.json())
-        .then(cat => cat[0].url)
-}
+        .then(cat => catURL = cat[0].url)
+        .then(() => {
+            contentTarget.innerHTML += renderCats(catURL)
+        })
+    }
