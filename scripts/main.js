@@ -12,6 +12,8 @@ import { CustomerNav } from "./customers/CustomerNav.js"
 import { CategorySelect } from "./categories/CategorySelect.js"
 import { LoginForm } from "./customers/LoginForm.js"
 import { ProductList } from "./products/ProductList.js"
+import { CatSelect } from "./cats/CatSelect.js"
+import { getCats, useCats } from "./cats/CatProvider.js"
 
 
 
@@ -20,5 +22,4 @@ LoginForm()
 CustomerNav()
 CategorySelect()
 ProductList()
-
-
+CatSelect()
